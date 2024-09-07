@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"os/signal"
 	"path"
@@ -23,7 +22,8 @@ func AppAction(ctx *cli.Context) error {
 
 	sess, err := discordgo.New("Bot " + token)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("Unable to launch slog", "error", err)
+		os.Exit(1)
 	}
 
 	sess.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -62,7 +62,7 @@ func AppAction(ctx *cli.Context) error {
 	}
 	defer sess.Close()
 
-	fmt.Println("Bot is now running. Press CTRL-C to exit.")
+	slog.Info("Bot is now running")
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
@@ -79,6 +79,9 @@ func getSecret(secretsPath, secretName string) (string, error) {
 }
 
 func main() {
+	loggr := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
+	slog.SetDefault(loggr)
+
 	app := &cli.App{
 		Name:   "Songlinkr",
 		Usage:  "A Discord bot that converts song links to Universal Song.link",
@@ -86,11 +89,12 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "secrets-path",
-				EnvVars: []string{"SECRETS_DIR"},
+				EnvVars: []string{"SECRETS_PATH"},
 			},
 		},
 	}
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
+		slog.Error("An error occured during runtime", "error", err)
+		os.Exit(1)
 	}
 }

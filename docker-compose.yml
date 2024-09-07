@@ -1,0 +1,8 @@
+---
+services:
+  songlinkr:
+    container_name: songlinkr
+    build: .
+    volumes: [./secrets:/secrets]
+    environment: [SECRETS_PATH=/secrets]
+    restart: unless-stopped
