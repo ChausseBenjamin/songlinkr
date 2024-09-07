@@ -1,10 +1,10 @@
-<center>
-<img src="assets/logo.jpg" alt="Songlinkr logo" width=250><br>
+<div align="center">
+<img src="assets/logo.jpg" alt="Songlinkr logo" width=250px><br>
 <h1>Songlinkr</h1>
 
 A discord bot for universal music links (using [song.link][1])
 
-</center>
+</div>
 
 ## About
 
@@ -14,9 +14,7 @@ is for! Just host it, and add it to your discord server!
 
 **Here's an example of it in action**:
 
-<center>
-<img src="assets/demo.jpg" width="90%">
-</center>
+<img src="assets/demo.jpg" width=250px align=center>
 
 ## Configuration
 
