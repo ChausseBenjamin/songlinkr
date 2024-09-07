@@ -14,7 +14,9 @@ is for! Just host it, and add it to your discord server!
 
 **Here's an example of it in action**:
 
-<img src="assets/demo.jpg" width=250px align=center>
+<div align="center">
+<img src="assets/demo.jpg" width=250px>
+</div>
 
 ## Configuration
 
