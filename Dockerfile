@@ -11,6 +11,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /application cmd/songlinkr/main.go
 
 FROM scratch AS package
 
+COPY --from=setup /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=setup /application /application
 
 CMD ["/application"]
