@@ -23,22 +23,20 @@ is for! Just host it, and add it to your discord server!
 Before hosting this locally, you will need to configure yourself a discord bot
 and prepare a spot to store it's personal info. Here's how to do so:
 
-1. From within this repository, run the following:
-```sh
-mkdir -p secrets && touch secrets/token
-```
-2. Head to https://discord.com/developers/applications and create a new
+1. Create an empty `.env` file in this repository.
+1. Head to https://discord.com/developers/applications and create a new
    application
-3. Head to the bot page and create your bot:
+2. Head to the bot page and create your bot:
    - Give it a name
    - Feel free to use the image in `assets/logo.png` as it's icon
-   - Click the `Reset Token` and copy the token to the `secrets/token` file
-     you created earlier.
+   - Click the `Reset Token` and save it as `DISCORD_TOKEN=<your_discord_token>`
+     in the `.env` file you created.
    - Turn on the `Message Content Intent` field
-4. Configure your bot's OAuth2 settings:
+3. Configure your bot's OAuth2 settings:
    - Tick the `bot` scope (a new dialog will appear)
    - Tick the required bot permissions (`Send Messages`, `Read Message History` and
      `Embed Links` should be the only ones required)
+
 
 Congrats! Your are now ready to start hosting your bot!
 
@@ -56,8 +54,11 @@ go build -o songlinkr cmd/songlinkr/main.go
 
 Please note that this method will require you to manually start the bot
 when your computer boots up (and manually restart it if it ever crashes).
-You can specify any directory to store the secrets in by passing the
-`--secrets-path` argument on launch.
+You can must also provide the DISCORD_TOKEN whenever the service launches
+with the following:
+```sh
+/path/to/your/songlinkr --discord-token <your_discord_token>
+```
 
 ## Contributing
 

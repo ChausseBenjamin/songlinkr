@@ -1,11 +1,10 @@
 package main
 
 import (
+	"errors"
 	"log/slog"
 	"os"
 	"os/signal"
-	"path"
-	"strings"
 	"syscall"
 
 	services "github.com/ChausseBenjamin/songlinkr/internal/service"
@@ -14,10 +13,14 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+const tokenKey = "discord-token"
+
+var errMissingToken = errors.New("Missing discord token")
+
 func AppAction(ctx *cli.Context) error {
-	token, err := getSecret(ctx.String("secrets-path"), "token")
-	if err != nil {
-		return err
+	token := ctx.String(tokenKey)
+	if token == "" {
+		return errMissingToken
 	}
 
 	sess, err := discordgo.New("Bot " + token)
@@ -70,14 +73,6 @@ func AppAction(ctx *cli.Context) error {
 	return nil
 }
 
-func getSecret(secretsPath, secretName string) (string, error) {
-	secretValue, err := os.ReadFile(path.Join(secretsPath, secretName))
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimSpace(string(secretValue)), nil
-}
-
 func main() {
 	loggr := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
 	slog.SetDefault(loggr)
@@ -88,8 +83,8 @@ func main() {
 		Action: AppAction,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "secrets-path",
-				EnvVars: []string{"SECRETS_PATH"},
+				Name:    tokenKey,
+				EnvVars: []string{"DISCORD_TOKEN"},
 			},
 		},
 	}
