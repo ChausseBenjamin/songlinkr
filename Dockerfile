@@ -1,5 +1,4 @@
-# Step 1: Setup
-FROM golang:latest
+FROM golang:latest AS setup
 WORKDIR /app
 
 COPY go.* ./
@@ -8,6 +7,10 @@ COPY internal internal
 
 RUN go mod download && go mod verify
 
-RUN go build -o /application cmd/songlinkr/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o /application cmd/songlinkr/main.go
+
+FROM scratch AS package
+
+COPY --from=setup /application /application
 
 CMD ["/application"]
