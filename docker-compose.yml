@@ -4,5 +4,6 @@ services:
     container_name: songlinkr
     build: .
     volumes: [./secrets:/secrets]
-    environment: [SECRETS_PATH=/secrets]
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
     restart: unless-stopped
